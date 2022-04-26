@@ -1,0 +1,9 @@
+{
+    "name": "myers_diff-d",
+    "authors": [
+        "David AU"
+    ],
+    "description": "D Programming Language Template Implement for Myers Diff",
+    "license": "LGPL",
+    "targetType": "library"
+}
