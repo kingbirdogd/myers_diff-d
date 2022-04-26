@@ -1,8 +1,11 @@
 module myers_diff;
 
+
+import std.stdio;
 import std.typecons;
 import std.math;
 import std.array;
+import std.conv;
 template MyersDiff(T)
 {
 private:
@@ -154,6 +157,28 @@ public:
         }
         return rt;
     }
+private:
+    string formatOne(DiffResult r, string format, string strAdd, string strDelete)
+    {
+        string op = strAdd;
+        if (r.type == EditType.Remove)
+        {
+            op = strDelete;
+        }
+        string pos = to!string(r.pos);
+        string contest = to!string(r.str);
+        return format.replace("%pos%", pos).replace("%type%", op).replace("%content%", contest);
+    }
+public:
+    string formatResult(DiffResult[] results, string format, string strAdd, string strDelete)
+    {
+        string rt;
+        foreach (ref r; results) 
+        {
+            rt ~= formatOne(r, format, strAdd, strDelete);
+        }
+        return rt;
+    }
 };
 
 auto strDiff(string a, string b)
@@ -162,10 +187,23 @@ auto strDiff(string a, string b)
     return strDiff.getDiff(a.dup, b.dup);
 }
 
+auto strDiffFormat(MyersDiff!(char).DiffResult[]  result, string format, string strAdd, string strDelet)
+{
+    alias strDiff = MyersDiff!char;
+    return strDiff.formatResult(result, format, strAdd, strDelet);
+}
+
 auto lineDiff(string a, string b)
 {
-    alias lineDiff =  MyersDiff!string;
+    alias lineDiff = MyersDiff!string;
     auto array_a = a.replace("\r", "").split("\n");
     auto array_b = b.replace("\r", "").split("\n");
     return lineDiff.getDiff(array_a, array_b);
 }
+
+auto lineDiffFormat(MyersDiff!(string).DiffResult[] result, string format, string strAdd, string strDelet)
+{
+    alias lineDiff = MyersDiff!string;
+    return lineDiff.formatResult(result, format, strAdd, strDelet);
+}
+
