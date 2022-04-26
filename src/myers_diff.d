@@ -30,7 +30,7 @@ private:
         long N = a.length;
         long M = b.length;
         long delta = N - M;
-        long MAX = M + N;
+        long MAX = (M + N) * 2;
         auto fv = new V(-MAX, MAX);
         auto rv = new V(-MAX, MAX);
         long x, y;
