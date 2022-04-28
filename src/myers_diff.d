@@ -170,12 +170,20 @@ private:
         return format.replace("%pos%", pos).replace("%type%", op).replace("%content%", contest);
     }
 public:
-    string formatResult(DiffResult[] results, string format, string strAdd, string strDelete)
+    string formatResult(DiffResult[] results, string format, string strAdd, string strDelete, size_t max_line = size_t.max)
     {
         string rt;
-        foreach (ref r; results) 
+        auto len = results.length < max_line ? results.length : max_line;
+        auto rest = results.length - len;
+        for (size_t i = 0; i < len; ++i)
         {
             rt ~= formatOne(r, format, strAdd, strDelete);
+        }
+        if (rest > 0)
+        {
+            string rest_str = (to!string(rest) ~ "... different remain");
+            string last_line = format.replace("%pos%", rest_str).replace("%type%", rest_str).replace("%content%", rest_str);
+            rt ~= last_line;
         }
         return rt;
     }
@@ -187,7 +195,7 @@ auto strDiff(string a, string b)
     return strDiff.getDiff(a.dup, b.dup);
 }
 
-auto strDiffFormat(MyersDiff!(char).DiffResult[]  result, string format, string strAdd, string strDelet)
+auto strDiffFormat(MyersDiff!(char).DiffResult[]  result, string format, string strAdd, string strDelet, size_t max_line = size_t.max)
 {
     alias strDiff = MyersDiff!char;
     return strDiff.formatResult(result, format, strAdd, strDelet);
@@ -201,7 +209,7 @@ auto lineDiff(string a, string b)
     return lineDiff.getDiff(array_a, array_b);
 }
 
-auto lineDiffFormat(MyersDiff!(string).DiffResult[] result, string format, string strAdd, string strDelet)
+auto lineDiffFormat(MyersDiff!(string).DiffResult[] result, string format, string strAdd, string strDelet, size_t max_line = size_t.max)
 {
     alias lineDiff = MyersDiff!string;
     return lineDiff.formatResult(result, format, strAdd, strDelet);
