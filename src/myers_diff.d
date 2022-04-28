@@ -198,7 +198,7 @@ auto strDiff(string a, string b)
 auto strDiffFormat(MyersDiff!(char).DiffResult[]  result, string format, string strAdd, string strDelet, size_t max_line = size_t.max)
 {
     alias strDiff = MyersDiff!char;
-    return strDiff.formatResult(result, format, strAdd, strDelet);
+    return strDiff.formatResult(result, format, strAdd, strDelet, max_line);
 }
 
 auto lineDiff(string a, string b)
@@ -212,6 +212,6 @@ auto lineDiff(string a, string b)
 auto lineDiffFormat(MyersDiff!(string).DiffResult[] result, string format, string strAdd, string strDelet, size_t max_line = size_t.max)
 {
     alias lineDiff = MyersDiff!string;
-    return lineDiff.formatResult(result, format, strAdd, strDelet);
+    return lineDiff.formatResult(result, format, strAdd, strDelet, max_line);
 }
 
