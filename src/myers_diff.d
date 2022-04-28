@@ -177,7 +177,7 @@ public:
         auto rest = results.length - len;
         for (size_t i = 0; i < len; ++i)
         {
-            rt ~= formatOne(r, format, strAdd, strDelete);
+            rt ~= formatOne(results[i], format, strAdd, strDelete);
         }
         if (rest > 0)
         {
